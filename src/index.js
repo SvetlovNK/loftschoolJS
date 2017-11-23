@@ -10,6 +10,26 @@
  Зарпещено использовать встроенные методы для работы с массивами
  */
 function isAllTrue(array, fn) {
+    let isAllTrue = true;
+
+    if (!(array instanceof Array) || array.length === 0) {
+        throw new Error('empty array');
+    }
+
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
+
+    for (let i = 0; i < array.length; i++) {
+        let isTrue = (fn(array[i]));
+
+        if (!isTrue) {
+            isAllTrue = false;
+            break;
+        }
+    }
+
+    return isAllTrue;
 }
 
 /*
