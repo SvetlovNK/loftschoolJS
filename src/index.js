@@ -42,6 +42,26 @@ function isAllTrue(array, fn) {
  Зарпещено использовать встроенные методы для работы с массивами
  */
 function isSomeTrue(array, fn) {
+    let someTrue = false;
+
+    if (!(array instanceof Array) || array.length === 0) {
+        throw new Error('empty array');
+    }
+
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
+
+    for (let i = 0; i < array.length; i++) {
+        let isTrue = (fn(array[i]));
+
+        if (isTrue) {
+            someTrue = true;
+            break;
+        }
+    }
+
+    return someTrue;
 }
 
 /*
@@ -53,6 +73,23 @@ function isSomeTrue(array, fn) {
  - fn не является функцией (с текстом "fn is not a function")
  */
 function returnBadArguments(fn) {
+
+    let result = new Array();
+
+    if (typeof fn !== 'function') {
+        throw new Error('fn is not a function');
+    }
+
+    for (let i = 1; i< arguments.length; i++) {
+        try {
+            fn(arguments[i]);
+        }
+        catch (e) {
+            result.push(arguments[i]);
+        }
+    }
+
+    return result;
 }
 
 /*
@@ -69,7 +106,51 @@ function returnBadArguments(fn) {
  - number не является числом (с текстом "number is not a number")
  - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-function calculator() {
+function calculator(number = 0) {
+    let result = number;
+
+    if (typeof number != 'number') {
+        throw new Error('number is not a number');
+    }
+
+    let object = {
+        sum: function() {
+            for (let i = 0; i < arguments.length; i++) {
+                result += arguments[i];
+            }
+
+            return result;
+        },
+        dif: function () {
+            for (let i = 0; i <arguments.length; i++) {
+
+                result -= arguments[i];
+            }
+
+            return result;
+        },
+        div: function () {
+            for (let i = 0; i < arguments.length; i++) {
+
+                if (arguments[i] === 0) {
+                    throw new Error('division by 0');
+                }
+
+                result /= arguments[i];
+            }
+
+            return result;
+        },
+        mul: function () {
+            for (let i = 0; i < arguments.length; i++) {
+                result *= arguments[i];
+            }
+
+            return result;
+        }
+    };
+
+    return object;
 }
 
 export {
