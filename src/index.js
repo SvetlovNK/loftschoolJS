@@ -32,7 +32,7 @@ function reduce(array, fn, initial) {
     let i = (typeof initial === 'undefined') ? 1 : 0;
     let result = initial || array[0];
 
-    for (; i < array.length; i++) {
+    for (i; i < array.length; i++) {
         result = fn(result, array[i], i, array);
     }
 
@@ -96,6 +96,40 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  */
 function slice(array, from, to) {
+    let result = new Array;
+
+    let counter = (typeof to === 'undefined') ? array.length : to;
+    let i = (typeof from === 'undefined') ? 0 : from;
+
+    if (to < 0) {
+        counter = array.length + to;
+    }
+
+    if (to > array.length) {
+        counter = array.length;
+    }
+
+    if (from < 0) {
+        i = array.length + from;
+
+        if (Math.abs(from) > array.length) {
+            i = 0;
+        }
+    }
+
+    for (i; i < counter; i++) {
+        result.push(array[i]);
+    }
+
+    // for (i ; i < array.length; i++) {
+    //     console.warn('i', i);
+    //     result.push(array[i]);
+    // }
+    console.log('from: ', from, 'to: ', to);
+    console.log('Массив: ', array);
+    console.log('Result: ', result);
+
+    return result;
 }
 
 /*
