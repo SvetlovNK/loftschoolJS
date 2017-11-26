@@ -45,7 +45,7 @@ function reduce(array, fn, initial) {
  Функция должна удалить указанное свойство из указанного объекта
  */
 function deleteProperty(obj, prop) {
-    if (prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
         delete obj[prop];
     }
 }
@@ -56,11 +56,7 @@ function deleteProperty(obj, prop) {
  Функция должна проверить существует ли укзаанное свойство в указанном объекте
  */
 function hasProperty(obj, prop) {
-    if (prop in obj) {
-        return true;
-    } else {
-        return false;
-    }
+    return obj.hasOwnProperty(prop);
 }
 
 /*
@@ -68,13 +64,7 @@ function hasProperty(obj, prop) {
  Функция должна получить все перечисляемые свойства объекта и вернуть их в виде массива
  */
 function getEnumProps(obj) {
-    let result = new Array;
-
-    for (let key in obj) {
-        result.push(key);
-    }
-
-    return result;
+    return Object.keys(obj);
 }
 
 /*
@@ -120,14 +110,6 @@ function slice(array, from, to) {
     for (i; i < counter; i++) {
         result.push(array[i]);
     }
-
-    // for (i ; i < array.length; i++) {
-    //     console.warn('i', i);
-    //     result.push(array[i]);
-    // }
-    console.log('from: ', from, 'to: ', to);
-    console.log('Массив: ', array);
-    console.log('Result: ', result);
 
     return result;
 }
