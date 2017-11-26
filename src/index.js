@@ -10,7 +10,6 @@
  Зарпещено использовать встроенные методы для работы с массивами
  */
 function isAllTrue(array, fn) {
-    let isAllTrue = true;
 
     if (!(array instanceof Array) || array.length === 0) {
         throw new Error('empty array');
@@ -24,12 +23,11 @@ function isAllTrue(array, fn) {
         let isTrue = (fn(array[i]));
 
         if (!isTrue) {
-            isAllTrue = false;
-            break;
+            return false;
         }
     }
 
-    return isAllTrue;
+    return true;
 }
 
 /*
@@ -42,7 +40,6 @@ function isAllTrue(array, fn) {
  Зарпещено использовать встроенные методы для работы с массивами
  */
 function isSomeTrue(array, fn) {
-    let someTrue = false;
 
     if (!(array instanceof Array) || array.length === 0) {
         throw new Error('empty array');
@@ -56,12 +53,11 @@ function isSomeTrue(array, fn) {
         let isTrue = (fn(array[i]));
 
         if (isTrue) {
-            someTrue = true;
-            break;
+            return true;
         }
     }
 
-    return someTrue;
+    return false;
 }
 
 /*
