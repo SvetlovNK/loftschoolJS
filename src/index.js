@@ -85,27 +85,11 @@ function upperProps(obj) {
  Задача 8 *:
  Напишите аналог встроенного метода slice для работы с массивами
  */
-function slice(array, from, to) {
+function slice(array, from = 0, to = array.length) {
     let result = new Array;
 
-    let counter = (typeof to === 'undefined') ? array.length : to;
-    let i = (typeof from === 'undefined') ? 0 : from;
-
-    if (to < 0) {
-        counter = array.length + to;
-    }
-
-    if (to > array.length) {
-        counter = array.length;
-    }
-
-    if (from < 0) {
-        i = array.length + from;
-
-        if (Math.abs(from) > array.length) {
-            i = 0;
-        }
-    }
+    let i = spotFrom(from, array);
+    let counter = spotTo(to, array);
 
     for (i; i < counter; i++) {
         result.push(array[i]);
@@ -114,6 +98,29 @@ function slice(array, from, to) {
     return result;
 }
 
+function spotFrom(fromValue, array) {
+    if (fromValue < 0) {
+        if (Math.abs(fromValue) > array.length) {
+            return 0;
+        } else {
+            return array.length + fromValue;
+        }
+    }
+
+    return fromValue;
+}
+
+function spotTo(toValue, array) {
+    if (toValue < 0) {
+        return array.length + toValue;
+    }
+
+    if (toValue > array.length) {
+        return array.length;
+    }
+
+    return toValue;
+}
 /*
  Задача 9 *:
  Функция принимает объект и должна вернуть Proxy для этого объекта
