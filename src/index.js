@@ -35,7 +35,7 @@ function createAWithHref(hrefValue) {
  * @param {Element} where - куда вставлять
  */
 function prepend(what, where) {
-    where.insertBefore(what, where.firstChild);
+    where.insertBefore(what, where.firstChild)
 }
 
 /**
@@ -53,6 +53,14 @@ function prepend(what, where) {
  * т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+    let result = new Array();
+    let childElements = where.children;
+
+    for (let i = 0; i < childElements.length - 1; i++) {
+        if (childElements[i].nextElementSibling.nodeName === 'P') result.push(childElements[i]);
+    }
+
+    return result;
 }
 
 /**
@@ -64,10 +72,11 @@ function findAllPSiblings(where) {
  * @return {Array<string>}
  */
 function findError(where) {
-    var result = [];
+    let result = new Array();
+    let childElements = where.children;
 
-    for (var i = 0; i < where.childNodes.length; i++) {
-        result.push(where.childNodes[i].innerText);
+    for (let i = 0; i < childElements.length; i++) {
+        result.push(childElements[i].innerText);
     }
 
     return result;
@@ -87,6 +96,11 @@ function findError(where) {
  * должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+    let childs = where.childNodes;
+
+    for (let i = 0; i < childs.length; i++) {
+        if (childs[i].nodeType == '3') where.removeChild(childs[i]);
+    }
 }
 
 /**
@@ -100,6 +114,20 @@ function deleteTextNodes(where) {
  * должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+    deleteTextNodes(where);
+
+    function deleteTextNodes(element) {
+        let childs = element.childNodes;
+
+        for (let i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == '3') {
+                element.removeChild(childs[i]);
+                i--;
+            } else {
+                deleteTextNodes(childs[i]);
+            }
+        }
+    }
 }
 
 /**
