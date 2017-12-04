@@ -177,23 +177,17 @@ function collectDOMStat(root) {
 
     function checkNodeTag(nodeElement) {
         let type = nodeElement.nodeName;
+        let tags = result.tags;
 
-        if (result.tags.hasOwnProperty(type)) {
-            result.tags[type]++;
-        } else {
-            result.tags[type] = 1;
-        }
+        !tags[type] ? tags[type] = 1 : tags[type]++;
     }
 
     function checkNodeClass(nodeElement) {
-        let elementClasses = nodeElement.classList;
+        let classes = nodeElement.classList;
+        let resClasses = result.classes;
 
-        for (let i = 0 ; i < elementClasses.length; i++) {
-            if (result.classes.hasOwnProperty(elementClasses[i])) {
-                result.classes[elementClasses[i]]++;
-            } else {
-                result.classes[elementClasses[i]] = 1;
-            }
+        for (let i = 0 ; i < classes.length; i++) {
+            !resClasses[classes[i]] ? resClasses[classes[i]] = 1 : resClasses[classes[i]]++;
         }
     }
 
@@ -232,6 +226,32 @@ function collectDOMStat(root) {
  * }
  */
 function observeChildNodes(where, fn) {
+    const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            let observResult = {
+                type: '',
+                nodes: new Array()
+            };
+
+            mutation.addedNodes.forEach( (element) => {
+                observResult.type = 'insert';
+                observResult.nodes.push(element);
+            });
+
+            mutation.removedNodes.forEach( (element) => {
+                observResult.type = 'remove';
+                observResult.nodes.push(element);
+            });
+
+            fn(observResult);
+        })
+    });
+
+    let config = {
+        childList: true,
+    };
+
+    observer.observe(where, config);
 }
 
 export {
