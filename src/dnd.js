@@ -1,3 +1,5 @@
+require('./custom.css');
+
 /** Со звездочкой */
 /**
  * Создать страницу с кнопкой
@@ -24,12 +26,22 @@ let homeworkContainer = document.querySelector('#homework-container');
  */
 function createDiv() {
     let div = document.createElement('DIV');
+    const max = 150;
+    const min = 50;
 
-    div.style.width = `${Math.random() * 100}px`;
-    div.style.height = `${Math.random() * 100}px`;
+    const maxX = window.innerWidth;
+    const maxY = window.innerHeight;
+
+    const divWidth = Math.random() * (max - min) + min;
+    const divHeight = Math.random() * (max - min) + min;
+    const leftPosition = Math.random() * (maxX - divWidth) + divWidth;
+    const TopPosition = Math.random() * (maxY - divHeight) + divHeight;
+
     div.style.position = 'absolute';
-    div.style.top = `${Math.random() * 1000}px`;
-    div.style.left = `${Math.random() * 1000}px`;
+    div.style.width = `${divWidth}px`;
+    div.style.height = `${divHeight}px`;
+    div.style.top = `${TopPosition}px`;
+    div.style.left = `${leftPosition}px`;
     div.style.backgroundColor = getRandomColor();
 
     div.classList.add('draggable-div');
@@ -54,7 +66,7 @@ function getRandomColor() {
  * @param {Element} target
  */
 function addListeners(target) {
-
+    target.setAttribute('draggable', true);
 }
 
 let addDivButton = homeworkContainer.querySelector('#addDiv');
@@ -63,12 +75,45 @@ addDivButton.addEventListener('click', function() {
     // создать новый div
     let div = createDiv();
 
+    let dragHelper = new Object();
+
     // добавить на страницу
     homeworkContainer.appendChild(div);
     // назначить обработчики событий мыши для реализации d&d
     addListeners(div);
+    homeworkContainer.addEventListener('dragstart', startDrag);
+    homeworkContainer.addEventListener('dragend', handleDrop);
+    homeworkContainer.addEventListener('drop', handleDrop);
     // можно не назначать обработчики событий каждому div в отдельности, а использовать делегирование
     // или использовать HTML5 D&D - https://www.html5rocks.com/ru/tutorials/dnd/basics/
+
+    function startDrag(event) {
+        let div = event.target;
+
+        div.classList.add('drag');
+
+        dragHelper.targetX = event.clientX - div.offsetLeft;
+        dragHelper.targetY = event.clientY - div.offsetTop;
+    }
+
+    function handleDrop(event) {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+
+        event.preventDefault();
+
+        let div = event.target;
+
+        let xCoords = event.clientX - dragHelper.targetX;
+        let yCoords = event.clientY - dragHelper.targetY;
+
+        div.style.top = `${yCoords}px`;
+        div.style.left = `${xCoords}px`;
+
+        div.classList.remove('drag');
+        dragHelper = {};
+    }
 });
 
 export {

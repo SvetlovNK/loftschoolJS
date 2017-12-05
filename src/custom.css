@@ -1,0 +1,20 @@
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.draggable-div {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity .2s ease, transform .2s cubic-bezier(.25, .46, .45, .94);
+}
+
+.draggable-div.drag {
+    opacity: .4;
+    transform: scale(.5);
+}
