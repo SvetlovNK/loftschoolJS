@@ -79,17 +79,17 @@ function setCookie(name, value, options) {
     document.cookie = updatedCookie;
 }
 
-/**
 function getCookie(name) {
     let regEx = new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)");
     let matches = document.cookie.match(regEx);
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
- */
 
 export {
     createWindow,
     closeWindow,
     createCookie,
-    deleteCookie
+    deleteCookie,
+    setCookie,
+    getCookie
 };
